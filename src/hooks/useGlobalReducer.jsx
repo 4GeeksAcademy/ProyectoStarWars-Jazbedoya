@@ -1,24 +1,31 @@
-// Import necessary hooks and functions from React.
-import { useContext, useReducer, createContext } from "react";
-import storeReducer, { initialStore } from "../store"  // Import the reducer and the initial state.
+import storeReducer,{initialStore} from "../store";
 
-// Create a context to hold the global state of the application
-// We will call this global state the "store" to avoid confusion while using local states
-const StoreContext = createContext()
+// 1) Crear el Contexto
+const StoreContext = createContext(null);
 
-// Define a provider component that encapsulates the store and warps it in a context provider to 
-// broadcast the information throught all the app pages and components.
-export function StoreProvider({ children }) {
-    // Initialize reducer with the initial state.
-    const [store, dispatch] = useReducer(storeReducer, initialStore())
-    // Provide the store and dispatch method to all child components.
-    return <StoreContext.Provider value={{ store, dispatch }}>
-        {children}
-    </StoreContext.Provider>
+//2) Provider
+
+export function StoreProvider({children}) {
+    const [store, dispatch] = useReducer (storeReducer, undefined, initialStore);
 }
 
-// Custom hook to access the global state and dispatch function.
-export default function useGlobalReducer() {
-    const { dispatch, store } = useContext(StoreContext)
-    return { dispatch, store };
-}
+
+//3) Acciones que usara la UI
+const action = useMemo(()=>({
+    //Loading helper----
+    setLoading: (flag) =>  dispatch({type: "set_loading", payload:flag}),
+
+    //Setters Datos
+    setLoading: (list) =>  dispatch({type: "set_people", payload: list}),
+    setLoading: (list) =>  dispatch({type: "set_vehicles", payload: list}),
+    setLoading: (list) =>  dispatch({type: "set_planets", payload: list}),
+   
+
+    // favoritos
+    addFavorite : (item) =>  dispatch({type: "add_favorite", payload: item}),
+    removeFavorite: (item) =>  dispatch({type: "remove_favorite", payload: item}),
+
+
+
+
+}), []);

@@ -1,32 +1,61 @@
-export const initialStore=()=>{
-  return{
-    message: null,
-    todos: [
-      {
-        id: 1,
-        title: "Make the bed",
-        background: null,
-      },
-      {
-        id: 2,
-        title: "Do my homework",
-        background: null,
-      }
-    ]
-  }
-}
 
+ //Estado Inicial
+
+export const initialStore=()=>({
+
+    message: null,
+    loading: false,
+
+    //Datos que vendran de la API
+
+    people: [],
+    vehicles: [],
+    planets: [],ç
+
+
+    //REad later/ Favoritos
+    favorites : [] // elemntos{uid ,name,type}
+   
+  
+});
+  //Reducer
 export default function storeReducer(store, action = {}) {
   switch(action.type){
-    case 'add_task':
+    //Control general
 
-      const { id,  color } = action.payload
+    case 'set_loading': 
 
-      return {
+      return {...store, people: action.payload}; //array
+
+    case 'set_vehicles':
+      return {...store, vehicles: action.payload};
+
+    case 'set_planets':
+      return {...store , planets: action.payload};
+
+    
+      //Favoritos
+    case 'add_favorite':{
+      const item = action.payload; //{uid, type, name}
+      const exists = store.favorites.some(
+        f => f.uid === item.uid && f.type === item.type
+      );
+    return exists
+     ? store 
+     : {...store, favorites:[...store.favorites, item] };
+
+    }
+
+    case 'remove_favorite': {
+      const {uid,type} = action.payload;
+      return{
         ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
+        favorites: store.favorites.filter(f => !(f.uid === uid && f.type === ))
       };
+    }
+
+       
     default:
-      throw Error('Unknown action.');
+      throw Error('Unknown action.'+ action.type);
   }    
 }
