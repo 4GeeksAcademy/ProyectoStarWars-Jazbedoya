@@ -1,3 +1,5 @@
+import "b"
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'  // Global styles for your application
