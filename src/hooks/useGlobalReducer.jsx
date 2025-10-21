@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import React, { createContext, useContext, useReducer, useMemo } from "react";
 import storeReducer,{initialStore} from "../store";
 
 // 1) Crear el Contexto
@@ -12,14 +12,14 @@ export function StoreProvider({children}) {
 
 
 //3) Acciones que usara la UI
-const action = useMemo(()=>({
+const actions = useMemo(()=>({
     //Loading helper----
     setLoading: (flag) =>  dispatch({type: "set_loading", payload:flag}),
 
     //Setters Datos
-    setLoading: (list) =>  dispatch({type: "set_people", payload: list}),
-    setLoading: (list) =>  dispatch({type: "set_vehicles", payload: list}),
-    setLoading: (list) =>  dispatch({type: "set_planets", payload: list}),
+    setPeople: (list) =>  dispatch({type: "set_people", payload: list}),
+    setVehicles: (list) =>  dispatch({type: "set_vehicles", payload: list}),
+    setPlanets: (list) =>  dispatch({type: "set_planets", payload: list}),
    
 
     // favoritos
@@ -29,11 +29,17 @@ const action = useMemo(()=>({
 
 
 
-}), []);
+}), [dispatch]);
 
 const value = useMemo(()=>({store, actions}),[store, actions]);
 
-return <StoreContext.Provider value={value}></StoreContext.Provider>;
+return(
+
+<StoreContext.Provider value={value}>
+    {children}
+</StoreContext.Provider>
+
+);
 }
 
 

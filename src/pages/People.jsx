@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useStore } from "../hooks/useGlobalReducer";
 import { fetchPeople } from "../swapi";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useActionState } from "react";
 
 export default function people() {
-    const {store,action} = useStore();
+    const {store,actions} = useStore();
 
 
 useEffect(()=>{
